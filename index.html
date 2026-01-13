@@ -81,7 +81,7 @@
             z-index: -1;
             text-shadow: 0 0 10px rgba(0,0,0,0.2);
             animation: floatAnimal linear infinite;
-            transform: translateZ(0);
+            transform: translateZ(0); /* 硬件加速 */
         }
 
         /* 分层样式 */
@@ -194,7 +194,7 @@
 
         /* 导航栏 */
         .navbar {
-            background: rgba(var(--neutral-800), 0.95);
+            background: rgba(30, 41, 59, 0.95); /* 修复rgba写法，避免变量兼容问题 */
             padding: var(--spacing-lg) 0;
             border-bottom: 4px solid var(--accent-500);
             position: sticky;
@@ -202,6 +202,7 @@
             z-index: 100;
             box-shadow: var(--shadow-lg);
             backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px); /* 兼容Safari */
             margin-bottom: var(--spacing-xl);
         }
         
@@ -342,6 +343,7 @@
             background-color: rgba(255,255,255,0.08);
             margin-bottom: var(--spacing-sm);
             backdrop-filter: blur(4px);
+            -webkit-backdrop-filter: blur(4px); /* 兼容Safari */
             outline: none;
         }
         
@@ -419,6 +421,7 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* 兼容Safari */
             border: 1px solid rgba(255,255,255,0.1);
         }
         
@@ -709,6 +712,7 @@
             transform: translateY(30px) scale(0.98);
             transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
             backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px); /* 兼容Safari */
             border: 1px solid rgba(255,255,255,0.2);
             margin-bottom: var(--spacing-2xl);
         }
@@ -837,6 +841,7 @@
             position: relative;
             overflow: hidden;
             backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px); /* 兼容Safari */
             border: 1px solid rgba(255,255,255,0.3);
         }
         
@@ -1392,7 +1397,7 @@
         </div>
     </div>
 
-    <!-- JavaScript功能代码 -->
+    <!-- JavaScript功能代码 - 完整修复版 -->
     <script>
         // 页面加载动画
         window.addEventListener('load', () => {
@@ -1401,10 +1406,44 @@
                 initAnimalBackground();
                 initBannerParticles();
                 initBannerNatureAnimations();
+                initNavToggle(); // 初始化导航切换
+                initStarClickEffect(); // 初始化星星点击效果
             }, 800);
         });
 
-        // 初始化banner粒子动画
+        // 1. 初始化导航切换功能（核心缺失功能修复）
+        function initNavToggle() {
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pageContents = document.querySelectorAll('.page-content');
+            const navItems = document.querySelectorAll('.nav-item');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault(); // 阻止默认锚点跳转
+                    
+                    // 获取目标页面ID
+                    const targetPage = link.getAttribute('data-page');
+                    
+                    // 移除所有active状态
+                    navLinks.forEach(l => l.classList.remove('active'));
+                    pageContents.forEach(p => p.classList.remove('active'));
+                    navItems.forEach(i => i.classList.remove('active'));
+                    
+                    // 添加active状态到当前元素
+                    link.classList.add('active');
+                    link.closest('.nav-item').classList.add('active');
+                    document.getElementById(targetPage).classList.add('active');
+                    
+                    // 滚动到页面顶部
+                    window.scrollTo({
+                        top: 0,
+                        behavior: 'smooth'
+                    });
+                });
+            });
+        }
+
+        // 2. 初始化banner粒子动画
         function initBannerParticles() {
             const bannerParticles = [
                 document.getElementById('bannerParticles1'),
@@ -1436,14 +1475,14 @@
             });
         }
 
-        // 初始化Banner自然动画
+        // 3. 初始化Banner自然动画
         function initBannerNatureAnimations() {
             initWaterStreams();
             initBannerAnimals();
             initLeaves();
         }
         
-        // 初始化水流动画
+        // 3.1 初始化水流动画
         function initWaterStreams() {
             const waterContainers = [
                 document.getElementById('bannerWater1'),
@@ -1474,7 +1513,7 @@
             });
         }
         
-        // 初始化Banner小动物
+        // 3.2 初始化Banner小动物
         function initBannerAnimals() {
             const animalContainers = [
                 document.getElementById('bannerAnimals1'),
@@ -1487,68 +1526,4 @@
             const animals = ['🐦', '🦋', '🐝', '🐌', '🦔', '🐇', '🦉', '🐿️'];
             
             animalContainers.forEach(container => {
-                if (!container) return;
-                
-                const animalCount = Math.floor(Math.random() * 3) + 2;
-                
-                for (let i = 0; i < animalCount; i++) {
-                    const animal = document.createElement('div');
-                    animal.classList.add('banner-animal');
-                    animal.textContent = animals[Math.floor(Math.random() * animals.length)];
-                    animal.style.left = `${Math.random() * 80 + 10}%`;
-                    animal.style.top = `${Math.random() * 70 + 10}%`;
-                    animal.style.animationDuration = `${Math.random() * 20 + 20}s`;
-                    animal.style.animationDelay = `${Math.random() * 10}s`;
-                    
-                    container.appendChild(animal);
-                }
-            });
-        }
-        
-        // 初始化叶子飘落
-        function initLeaves() {
-            const leafContainers = [
-                document.getElementById('bannerLeaves1'),
-                document.getElementById('bannerLeaves2'),
-                document.getElementById('bannerLeaves3'),
-                document.getElementById('bannerLeaves4'),
-                document.getElementById('bannerLeaves5')
-            ];
-            
-            const leaves = ['🍃', '🍂', '🍁', '🌸', '🌺', '🌿'];
-            
-            leafContainers.forEach(container => {
-                if (!container) return;
-                
-                const leafCount = Math.floor(Math.random() * 4) + 5;
-                
-                for (let i = 0; i < leafCount; i++) {
-                    const leaf = document.createElement('div');
-                    leaf.classList.add('leaf');
-                    leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
-                    leaf.style.left = `${Math.random() * 100}%`;
-                    leaf.style.animationDuration = `${Math.random() * 10 + 15}s`;
-                    leaf.style.animationDelay = `${Math.random() * 20}s`;
-                    
-                    container.appendChild(leaf);
-                }
-            });
-        }
-        
-        // 初始化背景漂浮动物/花朵
-        function initAnimalBackground() {
-            const container = document.getElementById('animalBgContainer');
-            if (!container) return;
-            
-            // 定义元素类型和数量
-            const elements = [
-                { type: 'cat', content: '🐱' },
-                { type: 'rabbit', content: '🐰' },
-                { type: 'bird', content: '🐦' },
-                { type: 'bear', content: '🧸' },
-                { type: 'fox', content: '🦊' },
-                { type: 'butterfly', content: '🦋' },
-                { type: 'heart', content: '❤️' },
-                { type: 'flower1', content: '🌸' },
-                { type: 'flower2', content: '🌹' },
-                { type: 'flower3', content: '☘
+                if (!container
