@@ -1,0 +1,1554 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Summer's Creative Portfolio</title>
+    <style>
+        /* 基础重置与全局样式 - 8px网格系统 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+        }
+
+        /* 颜色与间距规范 */
+        :root {
+            /* 主色 */
+            --primary-100: #e0e7ff;
+            --primary-300: #818cf8;
+            --primary-500: #4f46e5;
+            --primary-700: #3730a3;
+            
+            /* 辅助色 */
+            --accent-500: #ec4899;
+            --accent-700: #be185d;
+            
+            /* 中性色 */
+            --neutral-50: #f8fafc;
+            --neutral-100: #f1f5f9;
+            --neutral-200: #e2e8f0;
+            --neutral-300: #cbd5e1;
+            --neutral-600: #475569;
+            --neutral-800: #1e293b;
+            --neutral-900: #0f172a;
+            
+            /* 间距规范 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+            
+            /* 圆角规范 */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            --radius-xl: 24px;
+            
+            /* 阴影规范 */
+            --shadow-sm: 0 2px 4px rgba(0,0,0,0.05);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.08);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.12);
+            --shadow-xl: 0 12px 32px rgba(0,0,0,0.15);
+            
+            /* 过渡规范 */
+            --transition-fast: 0.2s ease;
+            --transition-normal: 0.4s ease;
+            --transition-slow: 0.6s ease;
+        }
+        
+        /* 背景动物动画容器 */
+        .animal-bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+        
+        /* 漂浮元素基础样式 */
+        .floating-animal {
+            position: absolute;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: -1;
+            text-shadow: 0 0 10px rgba(0,0,0,0.2);
+            animation: floatAnimal linear infinite;
+            transform: translateZ(0);
+        }
+
+        /* 分层样式 */
+        .floating-animal.layer-1 {
+            font-size: 28px;
+            opacity: 0.9;
+            filter: blur(0px);
+            z-index: -1;
+        }
+        .floating-animal.layer-2 {
+            font-size: 22px;
+            opacity: 0.75;
+            filter: blur(0.5px);
+            z-index: -2;
+        }
+        .floating-animal.layer-3 {
+            font-size: 16px;
+            opacity: 0.5;
+            filter: blur(1px);
+            z-index: -3;
+        }
+        
+        /* 动画时长定义 */
+        .floating-animal.cat { animation-duration: 25s; }
+        .floating-animal.rabbit { animation-duration: 30s; }
+        .floating-animal.bird { animation-duration: 20s; }
+        .floating-animal.bear { animation-duration: 35s; }
+        .floating-animal.fox { animation-duration: 28s; }
+        .floating-animal.butterfly { animation-duration: 18s; }
+        .floating-animal.heart { animation-duration: 22s; }
+        .floating-animal.flower1 { animation-duration: 24s; }
+        .floating-animal.flower2 { animation-duration: 27s; }
+        .floating-animal.flower3 { animation-duration: 21s; }
+        .floating-animal.flower4 { animation-duration: 19s; }
+
+        /* 分层动画速度调整 */
+        .layer-1.cat { animation-duration: 20s; }
+        .layer-1.rabbit { animation-duration: 25s; }
+        .layer-1.bird { animation-duration: 15s; }
+        .layer-1.bear { animation-duration: 30s; }
+        .layer-1.fox { animation-duration: 23s; }
+        .layer-1.butterfly { animation-duration: 14s; }
+        .layer-1.heart { animation-duration: 18s; }
+        .layer-1.flower1 { animation-duration: 19s; }
+        .layer-1.flower2 { animation-duration: 22s; }
+        .layer-1.flower3 { animation-duration: 17s; }
+        .layer-1.flower4 { animation-duration: 15s; }
+
+        .layer-3.cat { animation-duration: 30s; }
+        .layer-3.rabbit { animation-duration: 35s; }
+        .layer-3.bird { animation-duration: 25s; }
+        .layer-3.bear { animation-duration: 40s; }
+        .layer-3.fox { animation-duration: 33s; }
+        .layer-3.butterfly { animation-duration: 22s; }
+        .layer-3.heart { animation-duration: 26s; }
+        .layer-3.flower1 { animation-duration: 29s; }
+        .layer-3.flower2 { animation-duration: 32s; }
+        .layer-3.flower3 { animation-duration: 25s; }
+        .layer-3.flower4 { animation-duration: 23s; }
+        
+        /* 漂浮动画 */
+        @keyframes floatAnimal {
+            0% {
+                transform: translateX(100vw) translateY(0) rotate(0deg) scale(1);
+                opacity: 0;
+            }
+            5% {
+                opacity: var(--opacity, 0.7);
+            }
+            25% {
+                transform: translateX(75vw) translateY(calc(-20px * var(--float-multiplier, 1))) rotate(90deg) scale(calc(1.1 * var(--scale-multiplier, 1)));
+                opacity: var(--opacity, 0.8);
+            }
+            50% {
+                transform: translateX(50vw) translateY(calc(20px * var(--float-multiplier, 1))) rotate(180deg) scale(calc(0.9 * var(--scale-multiplier, 1)));
+                opacity: var(--opacity, 0.9);
+            }
+            75% {
+                transform: translateX(25vw) translateY(calc(-15px * var(--float-multiplier, 1))) rotate(270deg) scale(calc(1.2 * var(--scale-multiplier, 1)));
+                opacity: var(--opacity, 0.8);
+            }
+            95% {
+                opacity: var(--opacity, 0.7);
+            }
+            100% {
+                transform: translateX(-50px) translateY(calc(10px * var(--float-multiplier, 1))) rotate(360deg) scale(1);
+                opacity: 0;
+            }
+        }
+
+        /* 页面基础样式 */
+        body {
+            background-color: var(--neutral-50);
+            color: var(--neutral-800);
+            line-height: 1.7;
+            overflow-x: hidden;
+            position: relative;
+            background: linear-gradient(135deg, var(--neutral-50) 0%, var(--neutral-100) 100%);
+            min-height: 100vh;
+        }
+        
+        /* 主容器 */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: var(--spacing-md) var(--spacing-lg);
+            position: relative;
+            z-index: 1;
+        }
+
+        /* 导航栏 */
+        .navbar {
+            background: rgba(var(--neutral-800), 0.95);
+            padding: var(--spacing-lg) 0;
+            border-bottom: 4px solid var(--accent-500);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(8px);
+            margin-bottom: var(--spacing-xl);
+        }
+        
+        .nav-list {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-xl);
+            list-style: none;
+            position: relative;
+            padding: var(--spacing-sm) 0;
+            flex-wrap: wrap;
+        }
+        
+        .nav-item {
+            position: relative;
+            padding: var(--spacing-xs) 0;
+            height: 70px;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+        
+        /* 小动物容器 */
+        .nav-animal {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%) scale(0);
+            font-size: 35px;
+            opacity: 0;
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            z-index: 2;
+            text-shadow: 0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(255,215,0,0.6);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+        }
+        
+        /* 导航项专属动物 */
+        .nav-item:nth-child(1) .nav-animal::after { content: '🐱'; filter: drop-shadow(0 0 8px #ff9aa2); } 
+        .nav-item:nth-child(2) .nav-animal::after { content: '🐰'; filter: drop-shadow(0 0 8px #ffb7b2); } 
+        .nav-item:nth-child(3) .nav-animal::after { content: '🐦'; filter: drop-shadow(0 0 8px #ffd6a5); } 
+        .nav-item:nth-child(4) .nav-animal::after { content: '🧸'; filter: drop-shadow(0 0 8px #caffbf); } 
+        .nav-item:nth-child(5) .nav-animal::after { content: '🦊'; filter: drop-shadow(0 0 8px #9bf6ff); } 
+        
+        /* Hover效果 */
+        .nav-item:hover .nav-animal {
+            transform: translateX(-50%) scale(1.4) translateY(8px);
+            opacity: 1;
+            animation: animalBounce 2s ease-in-out infinite;
+            box-shadow: 0 0 20px rgba(255,255,255,0.3);
+        }
+        
+        /* Active状态 */
+        .nav-item.active .nav-animal {
+            transform: translateX(-50%) scale(1.2) translateY(8px);
+            opacity: 1;
+            animation: animalBreath 3s ease-in-out infinite;
+        }
+        
+        /* 弹跳动画 */
+        @keyframes animalBounce {
+            0%, 100% { 
+                transform: translateX(-50%) scale(1.4) translateY(8px) rotate(0deg); 
+                text-shadow: 0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(255,215,0,0.6);
+            }
+            25% { 
+                transform: translateX(-50%) scale(1.5) translateY(0px) rotate(20deg); 
+                text-shadow: 0 0 20px rgba(255, 215, 0, 0.9), 0 0 40px rgba(255, 215, 0, 0.7);
+            }
+            50% { 
+                transform: translateX(-50%) scale(1.4) translateY(8px) rotate(-15deg); 
+                text-shadow: 0 0 15px rgba(255,255,255,0.9), 0 0 30px rgba(255,215,0,0.6);
+            }
+            75% { 
+                transform: translateX(-50%) scale(1.5) translateY(0px) rotate(10deg); 
+                text-shadow: 0 0 20px rgba(255, 105, 180, 0.9), 0 0 40px rgba(255, 105, 180, 0.7);
+            }
+        }
+        
+        /* 呼吸动画 */
+        @keyframes animalBreath {
+            0%, 100% {
+                transform: translateX(-50%) scale(1.2) translateY(8px);
+                opacity: 1;
+            }
+            50% {
+                transform: translateX(-50%) scale(1.3) translateY(5px);
+                opacity: 0.9;
+            }
+        }
+        
+        /* 导航项装饰点 */
+        .nav-item::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            bottom: 10px;
+            transform: translateX(-50%) scale(0);
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--primary-500);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            z-index: 1;
+            box-shadow: 0 0 8px rgba(79, 70, 229, 0.5);
+        }
+        
+        .nav-item:hover::before {
+            transform: translateX(-50%) scale(1.5);
+            box-shadow: 0 0 15px rgba(79, 70, 229, 0.8);
+        }
+        
+        .nav-item.active::before {
+            transform: translateX(-50%) scale(1.2);
+            background-color: var(--accent-500);
+            box-shadow: 0 0 12px rgba(236, 72, 153, 0.8);
+        }
+
+        /* 导航链接 */
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: var(--spacing-md) var(--spacing-xl);
+            font-size: 16px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: all var(--transition-normal);
+            display: inline-block;
+            border-radius: var(--radius-md);
+            position: relative;
+            overflow: hidden;
+            background-color: rgba(255,255,255,0.08);
+            margin-bottom: var(--spacing-sm);
+            backdrop-filter: blur(4px);
+            outline: none;
+        }
+        
+        .nav-link:focus-visible {
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.4);
+        }
+        
+        /* 导航链接渐变动画 */
+        .nav-link::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: all 0.8s ease;
+        }
+        
+        .nav-link span {
+            position: relative;
+            z-index: 2;
+            display: inline-block;
+            transition: all var(--transition-fast);
+        }
+        
+        .nav-link:hover {
+            background-color: var(--accent-500);
+            transform: translateY(-4px);
+            box-shadow: 0 10px 25px rgba(236, 72, 153, 0.4);
+        }
+        
+        .nav-link:hover::before {
+            left: 100%;
+        }
+        
+        .nav-link:hover span {
+            transform: scale(1.08);
+        }
+        
+        /* 激活状态 */
+        .nav-link.active {
+            background-color: var(--primary-500);
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.4);
+        }
+        
+        .nav-link.active::after {
+            content: '✓';
+            position: absolute;
+            right: var(--spacing-md);
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 14px;
+            color: white;
+            opacity: 0.9;
+            animation: checkPulse 2s ease-in-out infinite;
+        }
+        
+        /* 对勾脉冲动画 */
+        @keyframes checkPulse {
+            0%, 100% { opacity: 0.9; transform: translateY(-50%) scale(1); }
+            50% { opacity: 1; transform: translateY(-50%) scale(1.1); }
+        }
+
+        /* 页面标题横幅 */
+        .page-banner {
+            height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, var(--primary-500), var(--primary-700));
+            margin: 0 0 var(--spacing-2xl) 0;
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .banner-title {
+            color: white;
+            font-size: clamp(1.8rem, 4vw, 2.4rem);
+            font-weight: 600;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            z-index: 2;
+            animation: titleFloat 6s ease-in-out infinite;
+            letter-spacing: 1px;
+            text-align: center;
+            padding: 0 var(--spacing-lg);
+        }
+        
+        /* 横幅背景 */
+        .banner-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.3;
+            overflow: hidden;
+        }
+        
+        .banner-bg::before, .banner-bg::after {
+            content: '';
+            position: absolute;
+            width: 200%;
+            height: 200%;
+            top: -50%;
+            left: -50%;
+            background: rgba(255,255,255,0.15);
+            border-radius: 45%;
+            animation: wave 25s linear infinite;
+        }
+        
+        .banner-bg::after {
+            animation: wave 20s linear infinite reverse;
+            background: rgba(255,255,255,0.1);
+        }
+        
+        /* Banner粒子动画 */
+        .banner-particles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .banner-particle {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: rgba(255,255,255,0.8);
+            border-radius: 50%;
+            animation: particleFloat 8s ease-in-out infinite;
+            opacity: 0;
+            box-shadow: 0 0 10px rgba(255,255,255,0.5);
+        }
+        
+        .banner-particle.small {
+            width: 3px;
+            height: 3px;
+            animation-duration: 6s;
+        }
+        
+        .banner-particle.medium {
+            width: 8px;
+            height: 8px;
+            animation-duration: 10s;
+        }
+        
+        .banner-particle.large {
+            width: 12px;
+            height: 12px;
+            animation-duration: 12s;
+        }
+        
+        /* 粒子浮动动画 */
+        @keyframes particleFloat {
+            0% {
+                transform: translate(0, 0) scale(0.8);
+                opacity: 0;
+            }
+            20% {
+                opacity: 1;
+            }
+            80% {
+                opacity: 1;
+            }
+            100% {
+                transform: translate(calc(var(--x-end) * 1px), calc(var(--y-end) * 1px)) scale(1.2);
+                opacity: 0;
+            }
+        }
+        
+        /* 渐变流动动画 */
+        .banner-gradient {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            background: linear-gradient(45deg, 
+                rgba(79, 70, 229, 0.8) 0%, 
+                rgba(124, 58, 237, 0.8) 50%, 
+                rgba(236, 72, 153, 0.8) 100%);
+            background-size: 200% 200%;
+            animation: gradientFlow 15s ease infinite;
+            opacity: 0.4;
+        }
+        
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        @keyframes wave {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes titleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        /* Banner自然动画效果 */
+        .banner-water {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 40%;
+            z-index: 1;
+            overflow: hidden;
+        }
+        
+        .water-stream {
+            position: absolute;
+            width: 3px;
+            background: linear-gradient(180deg, transparent, rgba(135, 206, 235, 0.7), transparent);
+            border-radius: 50%;
+            animation: waterFlow linear infinite;
+            opacity: 0.6;
+        }
+        
+        .water-stream.slow { animation-duration: 8s; }
+        .water-stream.medium { animation-duration: 6s; }
+        .water-stream.fast { animation-duration: 4s; }
+        
+        @keyframes waterFlow {
+            0% {
+                transform: translateY(0) translateX(0);
+                height: 20px;
+            }
+            50% {
+                height: 40px;
+                opacity: 0.8;
+            }
+            100% {
+                transform: translateY(-100%) translateX(10px);
+                height: 20px;
+                opacity: 0.4;
+            }
+        }
+        
+        .banner-trees {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .tree {
+            position: absolute;
+            font-size: 40px;
+            opacity: 0.5;
+            animation: treeSway ease-in-out infinite;
+            color: rgba(255, 255, 255, 0.8);
+            text-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+        
+        .tree.left { left: 10%; top: 20%; animation-duration: 12s; }
+        .tree.right { right: 10%; top: 15%; animation-duration: 15s; }
+        .tree.small { font-size: 25px; opacity: 0.4; }
+        
+        @keyframes treeSway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+        
+        .banner-animals {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .banner-animal {
+            position: absolute;
+            font-size: 25px;
+            opacity: 0.7;
+            animation: animalWander ease-in-out infinite;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 0 8px rgba(0,0,0,0.2);
+        }
+        
+        @keyframes animalWander {
+            0% { 
+                transform: translate(0, 0) rotate(0deg); 
+                opacity: 0.5;
+            }
+            25% { 
+                transform: translate(30px, -10px) rotate(10deg); 
+                opacity: 0.8;
+            }
+            50% { 
+                transform: translate(60px, 5px) rotate(-5deg); 
+                opacity: 0.9;
+            }
+            75% { 
+                transform: translate(30px, -15px) rotate(15deg); 
+                opacity: 0.7;
+            }
+            100% { 
+                transform: translate(0, 0) rotate(0deg); 
+                opacity: 0.5;
+            }
+        }
+        
+        .banner-leaves {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .leaf {
+            position: absolute;
+            font-size: 18px;
+            opacity: 0.6;
+            animation: leafFall linear infinite;
+        }
+        
+        @keyframes leafFall {
+            0% {
+                transform: translateX(0) translateY(-20px) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.8;
+            }
+            90% {
+                opacity: 0.7;
+            }
+            100% {
+                transform: translateX(50px) translateY(100%) rotate(360deg);
+                opacity: 0;
+            }
+        }
+
+        /* 页面内容容器 */
+        .page-content {
+            background: rgba(255,255,255,0.95);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-2xl);
+            box-shadow: var(--shadow-lg);
+            min-height: 600px;
+            display: none;
+            opacity: 0;
+            transform: translateY(30px) scale(0.98);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.2);
+            margin-bottom: var(--spacing-2xl);
+        }
+        
+        .page-content.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            animation: contentPop 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        /* 内容弹出动画 */
+        @keyframes contentPop {
+            0% { transform: translateY(30px) scale(0.98) rotate(0deg); }
+            70% { transform: translateY(-5px) scale(1.01) rotate(0.5deg); }
+            100% { transform: translateY(0) scale(1) rotate(0deg); }
+        }
+
+        /* 内容布局 */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-2xl);
+        }
+        
+        .section {
+            margin-bottom: var(--spacing-3xl);
+            opacity: 0;
+            transform: translateY(20px);
+            animation: sectionFadeIn 1s ease-out forwards;
+        }
+        
+        /* 分段渐入动画 */
+        .section:nth-child(1) { animation-delay: 0.2s; }
+        .section:nth-child(2) { animation-delay: 0.4s; }
+        .section:nth-child(3) { animation-delay: 0.6s; }
+        
+        @keyframes sectionFadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* 章节标题 */
+        .section-title {
+            color: var(--neutral-800);
+            border-bottom: 3px solid var(--primary-500);
+            padding-bottom: var(--spacing-md);
+            margin-bottom: var(--spacing-xl);
+            font-size: clamp(1.3rem, 2vw, 1.5rem);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 80px;
+            height: 3px;
+            background-color: var(--accent-500);
+            transition: width 0.6s ease;
+        }
+        
+        .section:hover .section-title::after {
+            width: 180px;
+        }
+        
+        /* 图片容器 */
+        .img-container {
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            margin: var(--spacing-xl) 0;
+            box-shadow: var(--shadow-md);
+            transition: all var(--transition-normal);
+            position: relative;
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+        
+        .img-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent 60%, rgba(0,0,0,0.5));
+            opacity: 0;
+            transition: opacity var(--transition-fast);
+            z-index: 1;
+        }
+        
+        .img-container:hover {
+            transform: translateY(-10px) scale(1.02);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .img-container:hover::before {
+            opacity: 1;
+        }
+        
+        .img-container img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.8s ease;
+        }
+        
+        .img-container:hover img {
+            transform: scale(1.08);
+        }
+        
+        /* 项目卡片 */
+        .project-card {
+            background: rgba(255,255,255,0.9);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-2xl);
+            box-shadow: var(--shadow-md);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+            border-top: 5px solid var(--primary-500);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.3);
+        }
+        
+        .project-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, var(--primary-500), var(--accent-500), var(--primary-700));
+            transform: translateX(-100%);
+            transition: transform 0.8s ease;
+        }
+        
+        .project-card:hover {
+            transform: translateY(-8px) rotateX(5deg) rotateY(3deg);
+            box-shadow: var(--shadow-xl);
+        }
+        
+        .project-card:hover::before {
+            transform: translateX(0);
+        }
+        
+        /* 项目标题 */
+        .project-title {
+            color: var(--accent-500);
+            margin-bottom: var(--spacing-lg);
+            font-size: clamp(1.2rem, 1.8vw, 1.4rem);
+            font-weight: 600;
+            display: inline-block;
+            position: relative;
+        }
+        
+        .project-title::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-500);
+            transition: width var(--transition-normal);
+        }
+        
+        .project-card:hover .project-title::after {
+            width: 100%;
+        }
+        
+        /* 项目描述 */
+        .project-desc {
+            color: var(--neutral-600);
+            line-height: 1.8;
+            font-size: 1rem;
+            margin-bottom: var(--spacing-md);
+        }
+
+        /* 联系页样式 */
+        .contact-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: var(--spacing-2xl);
+            align-items: start;
+        }
+        
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-lg);
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-lg);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-md);
+            background: rgba(248,249,250,0.8);
+            transition: all var(--transition-normal);
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+        
+        .contact-item:hover {
+            background: var(--neutral-100);
+            transform: translateX(8px);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .contact-icon {
+            color: var(--primary-500);
+            font-size: 26px;
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(79, 70, 229, 0.15);
+            border-radius: 50%;
+            transition: all var(--transition-fast);
+        }
+        
+        .contact-item:hover .contact-icon {
+            transform: scale(1.1) rotate(10deg);
+            background-color: rgba(79, 70, 229, 0.25);
+        }
+        
+        .contact-link {
+            color: var(--primary-500);
+            text-decoration: none;
+            transition: all var(--transition-fast);
+            position: relative;
+            font-weight: 500;
+        }
+        
+        .contact-link:focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.4);
+            border-radius: 2px;
+        }
+        
+        .contact-link::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: var(--accent-500);
+            transition: width var(--transition-fast);
+        }
+        
+        .contact-link:hover {
+            color: var(--accent-500);
+        }
+        
+        .contact-link:hover::after {
+            width: 100%;
+        }
+
+        /* 星星点击效果 */
+        .star {
+            position: fixed;
+            color: #ffd700;
+            font-size: 22px;
+            pointer-events: none;
+            z-index: 9999;
+            text-shadow: 0 0 12px rgba(255,215,0,0.9), 0 0 25px rgba(255,215,0,0.6);
+            animation: starAnimation 1.8s ease-out forwards;
+        }
+        
+        @keyframes starAnimation {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg) scale(1);
+            }
+            50% {
+                transform: translateY(-25px) rotate(180deg) scale(1.3);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-70px) rotate(360deg) scale(0.9);
+            }
+        }
+
+        /* 页面加载动画 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--neutral-800) 0%, var(--neutral-900) 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease;
+        }
+        
+        .loader.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .loader-spinner {
+            width: 70px;
+            height: 70px;
+            border: 8px solid rgba(255,255,255,0.2);
+            border-top: 8px solid var(--primary-500);
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            box-shadow: 0 0 30px rgba(79, 70, 229, 0.5);
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* 响应式设计 */
+        @media (max-width: 1024px) {
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+            
+            .nav-list {
+                gap: var(--spacing-lg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .nav-list {
+                gap: var(--spacing-md);
+                padding: 0 var(--spacing-sm);
+            }
+            
+            .nav-animal {
+                font-size: 28px;
+                width: 40px;
+                height: 40px;
+            }
+            
+            .banner-title {
+                font-size: clamp(1.4rem, 5vw, 1.8rem);
+            }
+            
+            .page-banner {
+                height: 160px;
+                margin-bottom: var(--spacing-xl);
+            }
+            
+            .page-content {
+                padding: var(--spacing-xl);
+                min-height: auto;
+            }
+            
+            .project-card {
+                padding: var(--spacing-xl);
+                margin-bottom: var(--spacing-xl);
+            }
+            
+            /* 移动端分层大小适配 */
+            .floating-animal.layer-1 { font-size: 22px; }
+            .floating-animal.layer-2 { font-size: 18px; }
+            .floating-animal.layer-3 { font-size: 14px; }
+            
+            /* 移动端Banner自然动画适配 */
+            .tree { font-size: 30px; }
+            .tree.small { font-size: 20px; }
+            .banner-animal { font-size: 20px; }
+            
+            /* 移动端导航链接优化 */
+            .nav-link {
+                padding: var(--spacing-sm) var(--spacing-md);
+                font-size: 14px;
+            }
+            
+            /* 移动端内容间距优化 */
+            .content-grid {
+                gap: var(--spacing-xl);
+            }
+            
+            .section {
+                margin-bottom: var(--spacing-2xl);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-sm);
+            }
+            
+            .nav-list {
+                gap: var(--spacing-sm);
+            }
+            
+            .page-content {
+                padding: var(--spacing-lg);
+            }
+            
+            .project-card {
+                padding: var(--spacing-lg);
+            }
+            
+            .contact-item {
+                padding: var(--spacing-md);
+                gap: var(--spacing-md);
+            }
+            
+            .contact-icon {
+                font-size: 22px;
+                width: 40px;
+                height: 40px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 背景动物/花朵动画容器 -->
+    <div class="animal-bg-container" id="animalBgContainer"></div>
+
+    <!-- 页面加载动画 -->
+    <div class="loader">
+        <div class="loader-spinner"></div>
+    </div>
+
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <ul class="nav-list">
+            <li class="nav-item active">
+                <span class="nav-animal"></span>
+                <a href="#home" class="nav-link active" data-page="home"><span>Home</span></a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-animal"></span>
+                <a href="#contact" class="nav-link" data-page="contact"><span>Contact</span></a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-animal"></span>
+                <a href="#vector" class="nav-link" data-page="vector"><span>Vector Graphics</span></a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-animal"></span>
+                <a href="#audio" class="nav-link" data-page="audio"><span>Audio Editing</span></a>
+            </li>
+            <li class="nav-item">
+                <span class="nav-animal"></span>
+                <a href="#after-effects" class="nav-link" data-page="after-effects"><span>After Effects</span></a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <!-- 首页 -->
+        <div id="home" class="page-content active">
+            <div class="page-banner">
+                <div class="banner-gradient"></div>
+                <div class="banner-bg"></div>
+                <div class="banner-particles" id="bannerParticles1"></div>
+                <div class="banner-water" id="bannerWater1"></div>
+                <div class="banner-trees">
+                    <div class="tree left">🌳</div>
+                    <div class="tree right small">🌿</div>
+                </div>
+                <div class="banner-animals" id="bannerAnimals1"></div>
+                <div class="banner-leaves" id="bannerLeaves1"></div>
+                <h1 class="banner-title">✨ Turning ideas into creations 💡</h1>
+            </div>
+
+            <div class="content-grid">
+                <section class="section">
+                    <h2 class="section-title">About Me</h2>
+                    <p class="project-desc">Hello, my name is Summer, and welcome to my creative portfolio. This website showcases a selection of projects I completed throughout this course. Each project began with an idea and developed through experimentation, design, and reflection. Through this course, I explored different creative approaches and learned how to turn inspiration into meaningful visual outcomes.</p>
+                </section>
+
+                <section class="section">
+                    <h2 class="section-title">My Self-Portrait</h2>
+                    <div class="img-container">
+                        <img src="self-portrait.png" alt="Summer's Self-Portrait Illustration" title="Self-Portrait Created During the Course">
+                    </div>
+                    <p class="project-desc">This self-portrait is an illustration I created during this course, and it shows how this class helped me discover the fun and creativity of art.</p>
+                </section>
+            </div>
+        </div>
+
+        <!-- 联系页 -->
+        <div id="contact" class="page-content">
+            <div class="page-banner">
+                <div class="banner-gradient"></div>
+                <div class="banner-bg"></div>
+                <div class="banner-particles" id="bannerParticles2"></div>
+                <div class="banner-water" id="bannerWater2"></div>
+                <div class="banner-trees">
+                    <div class="tree left small">🌱</div>
+                    <div class="tree right">🌲</div>
+                </div>
+                <div class="banner-animals" id="bannerAnimals2"></div>
+                <div class="banner-leaves" id="bannerLeaves2"></div>
+                <h1 class="banner-title">Contact Information</h1>
+            </div>
+
+            <div class="content-grid">
+                <section class="section">
+                    <div class="contact-info">
+                        <div class="contact-details">
+                            <h2 class="section-title">King City Secondary School</h2>
+                            <div class="contact-item">
+                                <span class="contact-icon">📍</span>
+                                <p>Address: 2001 King Rd, King City, ON L7B 1K2</p>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">📞</span>
+                                <p>Phone: <a href="tel:(905)833-5332" class="contact-link">(905)833-5332</a></p>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">📧</span>
+                                <p>Email: <a href="mailto:king.city.ss@yrdsb.ca" class="contact-link">king.city.ss@yrdsb.ca</a></p>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">🗺️</span>
+                                <p>Location: <a href="https://maps.google.com/?q=2001+King+Rd,+King+City,+ON+L7B+1K2" target="_blank" class="contact-link">View on Map</a></p>
+                            </div>
+                        </div>
+                        <div class="map-container">
+                            <div class="img-container">
+                                <img src="school-map.png" alt="King City Secondary School Map" title="School Location Map">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- 矢量图形页 -->
+        <div id="vector" class="page-content">
+            <div class="page-banner">
+                <div class="banner-gradient"></div>
+                <div class="banner-bg"></div>
+                <div class="banner-particles" id="bannerParticles3"></div>
+                <div class="banner-water" id="bannerWater3"></div>
+                <div class="banner-trees">
+                    <div class="tree left">🌴</div>
+                    <div class="tree right small">☘️</div>
+                </div>
+                <div class="banner-animals" id="bannerAnimals3"></div>
+                <div class="banner-leaves" id="bannerLeaves3"></div>
+                <h1 class="banner-title">Vector Graphics Projects</h1>
+            </div>
+
+            <div class="content-grid">
+                <!-- 作业1 -->
+                <div class="project-card">
+                    <h3 class="project-title">Vector Graphics 1</h3>
+                    <div class="img-container">
+                        <img src="vector-1.png" alt="Vector Graphics 1 Project" title="First Vector Graphics Assignment">
+                    </div>
+                    <p class="project-desc">This assignment was my first time working with vector graphics using Adobe Illustrator. In this project, I practiced basic design skills such as changing the size of shapes, adjusting stroke weight, and using different colours to create a complete design. This was my favourite assignment in the unit because it was the first project I completed, and I spent a lot of time experimenting with different shapes and layouts. Even though it may not be the most visually advanced piece, it was an important learning experience and helped me build a strong foundation for future vector graphics projects.</p>
+                </div>
+
+                <!-- 作业2 -->
+                <div class="project-card">
+                    <h3 class="project-title">Vector Graphics 3</h3>
+                    <div class="img-container">
+                        <img src="vector-3-1.png" alt="Vector Graphics 3 - Curve Design" title="Pen Tool Practice - Curves">
+                    </div>
+                    <div class="img-container">
+                        <img src="vector-3-2.png" alt="Vector Graphics 3 - Dog Design" title="Pen Tool Practice - Dog Shape">
+                    </div>
+                    <p class="project-desc">This assignment focused on practicing the pen tool in Adobe Illustrator. Overall, the two designs were not very difficult. The heart shape was easier to create because it mainly used smooth and simple curves. The dog design was more challenging, especially at the turning points and when adjusting the layer order near the end of the project. This assignment helped me improve my control of curves and better understand how layering works in Illustrator.</p>
+                </div>
+
+                <!-- 作业3 -->
+                <div class="project-card">
+                    <h3 class="project-title">Vector Graphics 5</h3>
+                    <div class="img-container">
+                        <img src="vector-5.png" alt="Vector Graphics 5 - Transformation Tools" title="Scale, Shear, Rotate & Reflect Tools">
+                    </div>
+                    <p class="project-desc">This assignment introduced the scale tool, shear tool, rotate tool, and reflect tool, and allowed me to practice using each of them in Adobe Illustrator. The difficulty level of this project was not very high, but it helped me better understand how these transformation tools work. Even though the task was simple, it was very helpful and provided a strong foundation for future assignments that required more complex transformations.</p>
+                </div>
+
+                <!-- 作业4 -->
+                <div class="project-card">
+                    <h3 class="project-title">Vector Graphics - Text on Path</h3>
+                    <div class="img-container">
+                        <img src="vector-text-on-path.png" alt="Text on Path - Bunny Design" title="Bunny Shape Created with Text on Path">
+                    </div>
+                    <p class="project-desc">In this assignment, the goal was to learn how to use the Text on Path tool. For my design, I arranged text along curved paths to form the shape of a bunny, using the text to outline features such as the ears, face, and body. I mainly used the pen tool to create smooth paths so the text could follow the shapes accurately. This project helped me understand how text can be used as both a design element and a way to define form. It also improved my confidence with vector tools and prepared me for the vector graphics summative.</p>
+                </div>
+
+                <!-- 作业5 -->
+                <div class="project-card">
+                    <h3 class="project-title">Vector Graphics Summative Assignment</h3>
+                    <div class="img-container">
+                        <img src="vector-summative.png" alt="Vector Portrait of Ye Zhou" title="Celebrity Vector Portrait">
+                    </div>
+                    <p class="project-desc">In this assignment, I created a vector portrait of the celebrity Ye Zhou using Adobe Illustrator. I began by setting up the canvas, importing a reference image, and adding proportion guidelines to help with the facial structure. I used the pen tool to block out the main shapes, including the face, hair, clothing, and background, and applied flat colours without outlines. I then added shadows and highlights using the Pathfinder tool to build form. One challenge was placing shadows naturally, which I overcame by reviewing classroom tutorials. Overall, this project helped me improve my Illustrator skills and better understand shading and portrait design.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 音频编辑页 -->
+        <div id="audio" class="page-content">
+            <div class="page-banner">
+                <div class="banner-gradient"></div>
+                <div class="banner-bg"></div>
+                <div class="banner-particles" id="bannerParticles4"></div>
+                <div class="banner-water" id="bannerWater4"></div>
+                <div class="banner-trees">
+                    <div class="tree left small">🍀</div>
+                    <div class="tree right">🌾</div>
+                </div>
+                <div class="banner-animals" id="bannerAnimals4"></div>
+                <div class="banner-leaves" id="bannerLeaves4"></div>
+                <h1 class="banner-title">Audio Editing Projects</h1>
+            </div>
+
+            <div class="content-grid">
+                <!-- 作业1 -->
+                <div class="project-card">
+                    <h3 class="project-title">Audio Commercial / PSA Assignment</h3>
+                    <p class="project-desc">In this assignment, we were required to create two commercials or PSAs, including writing scripts and recording our own voice-overs. This was our first time working in a professional recording studio, and the process felt quite stressful at the beginning. The most challenging part was keeping the final audio at exactly 30 seconds and successfully blending the sound effects with my voice so that everything sounded natural and smooth. However, as I became more familiar with the process, the final result exceeded my expectations. Overall, this assignment was a valuable learning experience that helped me gain more confidence in recording and audio editing.</p>
+                </div>
+
+                <!-- 作业2 -->
+                <div class="project-card">
+                    <h3 class="project-title">Audio Editing for Film Sumative (Ratatouille)</h3>
+                    <p class="project-desc">In this assignment, we were required to add appropriate sound effects to a silent film. I chose to use sound effects from Ratatouille. The most challenging part was incorporating all the details I observed, especially selecting sound effects that matched the actions on screen. For example, when seasoning was added in the film, I needed to carefully choose sounds that were similar and realistic. I also focused on using subtle background sounds to enhance the atmosphere of the scene. Although the process was complex and required careful attention, I was very satisfied with the final result.</p>
+                </div>
+
+                <!-- 作业3 -->
+                <div class="project-card">
+                    <h3 class="project-title">Dangers of Free Apps (TikTok)</h3>
+                    <div class="img-container">
+                        <img src="tiktok-data-1.png" alt="TikTok Download Statistics" title="Global TikTok Downloads 2020">
+                    </div>
+                    <div class="img-container">
+                        <img src="tiktok-data-2.png" alt="TikTok Downloads by OS" title="TikTok Downloads by Operating System">
+                    </div>
+                    <div class="img-container">
+                        <img src="tiktok-data-3.png" alt="TikTok Regional Downloads" title="TikTok Downloads by Country">
+                    </div>
+                    <p class="project-desc">For this assignment, I chose the topic of the hidden dangers of TikTok. Through this project, I gained a deeper understanding of what TikTok is and the major risks associated with it. These risks include privacy violations and data mining, algorithm manipulation, mental health and addiction, as well as misinformation and fake content. In addition, I learned some useful safety tips and analyzed the impact of TikTok on people today by reviewing news articles and data. This assignment helped me better understand both the influence and the potential dangers of social media.</p>
+                    <p class="project-desc">View Project: <a href="Summer Zheng_Dangers of Free Apps.pdf" class="contact-link" target="_blank">Dangers of Free Apps Report</a></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- After Effects页 -->
+        <div id="after-effects" class="page-content">
+            <div class="page-banner">
+                <div class="banner-gradient"></div>
+                <div class="banner-bg"></div>
+                <div class="banner-particles" id="bannerParticles5"></div>
+                <div class="banner-water" id="bannerWater5"></div>
+                <div class="banner-trees">
+                    <div class="tree left">🌺</div>
+                    <div class="tree right small">🌸</div>
+                </div>
+                <div class="banner-animals" id="bannerAnimals5"></div>
+                <div class="banner-leaves" id="bannerLeaves5"></div>
+                <h1 class="banner-title">After Effects Projects</h1>
+            </div>
+
+            <div class="content-grid">
+                <div class="project-card">
+                    <h3 class="project-title">Adobe After Effects 1</h3>
+                    <div class="img-container">
+                        <img src="after-effects-1.png" alt="Adobe After Effects 1 Project" title="First After Effects Assignment">
+                    </div>
+                    <p class="project-desc">This was my first introduction to Adobe After Effects, where I learned the basic interface and core animation principles. I practiced creating simple motion graphics, keyframe animation, and layer management. The project focused on understanding timing and spacing in animations, as well as how to create smooth transitions between elements. This assignment laid the foundation for more complex motion design projects and helped me develop a better eye for dynamic visual storytelling.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript功能代码 -->
+    <script>
+        // 页面加载动画
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.querySelector('.loader').classList.add('hidden');
+                initAnimalBackground();
+                initBannerParticles();
+                initBannerNatureAnimations();
+            }, 800);
+        });
+
+        // 初始化banner粒子动画
+        function initBannerParticles() {
+            const bannerParticles = [
+                document.getElementById('bannerParticles1'),
+                document.getElementById('bannerParticles2'),
+                document.getElementById('bannerParticles3'),
+                document.getElementById('bannerParticles4'),
+                document.getElementById('bannerParticles5')
+            ];
+            
+            bannerParticles.forEach(container => {
+                if (!container) return;
+                
+                const particleCount = 15;
+                const sizes = ['small', 'medium', 'large'];
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    const sizeClass = sizes[Math.floor(Math.random() * sizes.length)];
+                    
+                    particle.classList.add('banner-particle', sizeClass);
+                    particle.style.left = `${Math.random() * 100}%`;
+                    particle.style.top = `${Math.random() * 100}%`;
+                    particle.style.animationDelay = `${Math.random() * 8}s`;
+                    particle.style.setProperty('--x-end', Math.random() * 100 - 50);
+                    particle.style.setProperty('--y-end', Math.random() * 100 - 50);
+                    
+                    container.appendChild(particle);
+                }
+            });
+        }
+
+        // 初始化Banner自然动画
+        function initBannerNatureAnimations() {
+            initWaterStreams();
+            initBannerAnimals();
+            initLeaves();
+        }
+        
+        // 初始化水流动画
+        function initWaterStreams() {
+            const waterContainers = [
+                document.getElementById('bannerWater1'),
+                document.getElementById('bannerWater2'),
+                document.getElementById('bannerWater3'),
+                document.getElementById('bannerWater4'),
+                document.getElementById('bannerWater5')
+            ];
+            
+            waterContainers.forEach(container => {
+                if (!container) return;
+                
+                const streamCount = Math.floor(Math.random() * 4) + 8;
+                const speeds = ['slow', 'medium', 'fast'];
+                
+                for (let i = 0; i < streamCount; i++) {
+                    const stream = document.createElement('div');
+                    const speedClass = speeds[Math.floor(Math.random() * speeds.length)];
+                    
+                    stream.classList.add('water-stream', speedClass);
+                    stream.style.left = `${Math.random() * 100}%`;
+                    stream.style.bottom = `${Math.random() * 20}px`;
+                    stream.style.height = `${Math.random() * 30 + 10}px`;
+                    stream.style.animationDelay = `${Math.random() * 5}s`;
+                    
+                    container.appendChild(stream);
+                }
+            });
+        }
+        
+        // 初始化Banner小动物
+        function initBannerAnimals() {
+            const animalContainers = [
+                document.getElementById('bannerAnimals1'),
+                document.getElementById('bannerAnimals2'),
+                document.getElementById('bannerAnimals3'),
+                document.getElementById('bannerAnimals4'),
+                document.getElementById('bannerAnimals5')
+            ];
+            
+            const animals = ['🐦', '🦋', '🐝', '🐌', '🦔', '🐇', '🦉', '🐿️'];
+            
+            animalContainers.forEach(container => {
+                if (!container) return;
+                
+                const animalCount = Math.floor(Math.random() * 3) + 2;
+                
+                for (let i = 0; i < animalCount; i++) {
+                    const animal = document.createElement('div');
+                    animal.classList.add('banner-animal');
+                    animal.textContent = animals[Math.floor(Math.random() * animals.length)];
+                    animal.style.left = `${Math.random() * 80 + 10}%`;
+                    animal.style.top = `${Math.random() * 70 + 10}%`;
+                    animal.style.animationDuration = `${Math.random() * 20 + 20}s`;
+                    animal.style.animationDelay = `${Math.random() * 10}s`;
+                    
+                    container.appendChild(animal);
+                }
+            });
+        }
+        
+        // 初始化叶子飘落
+        function initLeaves() {
+            const leafContainers = [
+                document.getElementById('bannerLeaves1'),
+                document.getElementById('bannerLeaves2'),
+                document.getElementById('bannerLeaves3'),
+                document.getElementById('bannerLeaves4'),
+                document.getElementById('bannerLeaves5')
+            ];
+            
+            const leaves = ['🍃', '🍂', '🍁', '🌸', '🌺', '🌿'];
+            
+            leafContainers.forEach(container => {
+                if (!container) return;
+                
+                const leafCount = Math.floor(Math.random() * 4) + 5;
+                
+                for (let i = 0; i < leafCount; i++) {
+                    const leaf = document.createElement('div');
+                    leaf.classList.add('leaf');
+                    leaf.textContent = leaves[Math.floor(Math.random() * leaves.length)];
+                    leaf.style.left = `${Math.random() * 100}%`;
+                    leaf.style.animationDuration = `${Math.random() * 10 + 15}s`;
+                    leaf.style.animationDelay = `${Math.random() * 20}s`;
+                    
+                    container.appendChild(leaf);
+                }
+            });
+        }
+        
+        // 初始化背景漂浮动物/花朵
+        function initAnimalBackground() {
+            const container = document.getElementById('animalBgContainer');
+            if (!container) return;
+            
+            // 定义元素类型和数量
+            const elements = [
+                { type: 'cat', content: '🐱' },
+                { type: 'rabbit', content: '🐰' },
+                { type: 'bird', content: '🐦' },
+                { type: 'bear', content: '🧸' },
+                { type: 'fox', content: '🦊' },
+                { type: 'butterfly', content: '🦋' },
+                { type: 'heart', content: '❤️' },
+                { type: 'flower1', content: '🌸' },
+                { type: 'flower2', content: '🌹' },
+                { type: 'flower3', content: '☘
